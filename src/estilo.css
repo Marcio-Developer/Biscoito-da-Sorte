@@ -6,10 +6,15 @@
     align-items: center;
 }
 
+h1{
+    color: #2d6d0f;
+    text-align: center;
+}
+
 .img{
     width: 220px;
     height: 220px;
-    margin-top: 50px;
+    margin-bottom: 10px;
 }
 
 .textoFrase{
