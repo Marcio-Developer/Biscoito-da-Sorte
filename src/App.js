@@ -1,65 +1,62 @@
-import React, { Component } from "react";
-import './estilo.css'
+import React, {Component} from 'react';
+import './style.css'
 class App extends Component{
 
-  constructor(props){
-    super(props);
-    this.state = {
-      textoFrase: ''
+    constructor(props){
+        super(props);
+        this.state = {
+        numero: 0,
+        botao: 'Iniciar'
     };
+    this.timer = null;
+    this.vai = this.vai.bind(this);
+    this.limpar = this.limpar.bind(this);
+  }
 
-    this.quebraBiscoito = this.quebraBiscoito.bind(this);
+  vai(){
+    let state = this.state;
 
-  this.frases = [
-  'Quanto mais uma pessoa se aproxima de uma mente calma, mais próximo ela está da força',
-  'Siga os bons e aprenda com eles.', 
-  'O bom-senso vale mais do que muito conhecimento.', 
-  'O riso é a menor distância entre duas pessoas.',
-  'O sábio nunca diz tudo o que pensa, mas pensa sempre tudo o que diz', 
-  'Deixe de lado as preocupações e seja feliz.',
-  'Realize o óbvio, pense no improvável e conquiste o impossível.',
-  'O objetivo de uma discussão não deve ser a vitória mas sim o progresso.',
-  'A maior barreira para o sucesso é o medo do fracasso.',
-  'Precisamos evoluir e entender que pensar diferente não nos torna inimigos.',
-  'Onde dialogam pessoas sábias, pensamentos diferentes não geram conflitos, geram novas ideias.',
-  'Bons hábitos são construídos na base da disciplina e não da motivação.',
-  'A busca pela excelência não deve ser um objetivo mas sim um hábito.',
-  'Sofremos mais na imaginação do que na realidade.',
-  'Mais graves são as consequências da raiva do que as suas causas.',
-  'Enquanto você vive, continue aprendendo a viver.',
-  'Se palavras te controlam, qualquer um pode te controlar.',
-  'Maturidade é saber ficar em silêncio, messmo quando temos muito a dizer.',
-  'Cada fracasso nos ensina algo que precisamos aprender.',
-  'Ter sucesso não é não fracassar...É não desistir apesar dos fracassos'
-];
+    if(this.timer !== null){
+        clearInterval(this.timer);
+        this.timer = null;
+        state.botao = 'Iniciar';
+    }else{
+        this.timer = setInterval(()=>{
+            let state = this.state;
+            state.numero += 0.1;
+            this.setState(state); 
+        },100);
+        state.botao = 'Pausar';
+    }
 
-} 
-  
-quebraBiscoito(){
-  let state = this.state;
-  let numeroAleatorio = Math.floor(Math.random() * this.frases.length);
-  state.textoFrase = '" ' + this.frases[numeroAleatorio] + '" ';
-  this.setState(state)
+    this.setState(state);
+  }
+
+  limpar(){
+    if(this.timer !== null){
+        clearInterval(this.timer);
+        this.timer = null;
+  }
+    let state = this.state;
+    state.numero = 0;
+    state.botao = 'Iniciar';
+    this.setState(state); 
 }
 
-render(){
-    return(
-      <div className="container">
-        <h1>Biscoito da Sorte</h1>
-        <img src={require('./assets/Biscoito.png')} className="img" />
-        <Botao nome="Abrir Biscoito" acaoBtn={this.quebraBiscoito}/>
-        <h3 className="textoFrase">{this.state.textoFrase}</h3>
-      </div>
-    );
-  }
-} 
-class Botao extends Component{
-  render(){
-    return(
-      <div>
-        <button onClick={this.props.acaoBtn}>{this.props.nome}</button>
-      </div>
-    );
-  }
-} 
+    render(){
+        return(
+            <div className='container'>
+                <h1>Cronômetro</h1>
+                <img src={require('./assets/cronometro.png')} className='img'/>
+                <a className='timer'>{this.state.numero.toFixed(1)}</a>
+
+                <div className='areaBtn'>
+                    <a className='botao' onClick={this.vai}>{this.state.botao}</a>
+                    <a className='botao' onClick={this.limpar}>Limpar</a>
+                </div>
+            </div>
+        );
+    }
+}
+
 export default App;
